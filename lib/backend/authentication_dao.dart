@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intern_assessment/backend/todo_dao.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+var todoData;
 
 class Authentication {
   final supabase = Supabase.instance.client;
@@ -29,6 +32,9 @@ class Authentication {
         await supabase.auth
             .signInWithPassword(email: email, password: password);
         print('login success');
+
+        todoData = await TodoDAO().getTodo();
+
         Navigator.of(context).pushReplacementNamed('/homepage');
       }
     } on AuthException catch (error) {

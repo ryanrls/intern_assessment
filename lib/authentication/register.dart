@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intern_assessment/DAO/authentication_dao.dart';
+import 'package:intern_assessment/backend/authentication_dao.dart';
 import 'package:intern_assessment/component.dart';
 
 class Register extends StatefulWidget {
@@ -36,7 +36,7 @@ class _RegisterState extends State<Register> {
                     decoration: const InputDecoration(labelText: 'Password')),
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: Component().loginButton(context, 'Submit', () {
+                  child: Component().loginButton(context, 'Submit', () async {
                     Authentication().register(_nameController.text,
                         _emailController.text, _passwordController.text);
                   }),

@@ -118,7 +118,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
               const SizedBox(
                 height: 10,
               ),
-              Component().loginButton(
+              Component().submitButton(
                   context,
                   "Update To-Do",
                   isLoading
@@ -136,12 +136,6 @@ class _UpdateTodoState extends State<UpdateTodo> {
                                 _timeController.text,
                                 id!);
 
-                            // if (success == true && context.mounted) {
-                            //   _dateController.clear();
-                            //   _titleController.clear();
-                            //   _timeController.clear();
-                            //   dropdownValue = Component().taskStatus.first;
-                            // }
                             if (context.mounted) {
                               Component().snackBar(
                                   context, "To-Do Updated Successfully", false);
@@ -158,7 +152,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
                             }
                           }
                         }),
-              Component().loginButton(
+              Component().submitButton(
                   context,
                   "Delete To-Do",
                   isLoading

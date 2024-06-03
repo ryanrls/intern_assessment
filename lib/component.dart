@@ -5,16 +5,19 @@ class Component {
 
   Widget textfield(
       BuildContext context, TextEditingController controller, bool obscureText,
-      {InputDecoration? decoration, void Function(String)? onChanged}) {
+      {InputDecoration? decoration,
+      void Function(String)? onChanged,
+      String? Function(String? w)? validator}) {
     return TextFormField(
       controller: controller,
       decoration: decoration,
       obscureText: obscureText,
       onChanged: onChanged,
+      validator: validator,
     );
   }
 
-  Widget loginButton(
+  Widget submitButton(
       BuildContext context, String text, Future<void> Function()? onPressed,
       {Color? backgroundColor, Color? textColor}) {
     return ElevatedButton(

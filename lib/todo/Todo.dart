@@ -92,7 +92,7 @@ class _TodoState extends State<Todo> {
               const SizedBox(
                 height: 10,
               ),
-              Component().loginButton(
+              Component().submitButton(
                   context,
                   "Add To-Do",
                   isLoading
@@ -109,12 +109,6 @@ class _TodoState extends State<Todo> {
                                 _dateController.text,
                                 _timeController.text);
 
-                            // if (success == true && context.mounted) {
-                            //   _dateController.clear();
-                            //   _titleController.clear();
-                            //   _timeController.clear();
-                            //   dropdownValue = Component().taskStatus.first;
-                            // }
                             if (context.mounted) {
                               Component().snackBar(
                                   context, "To-Do Successfully Added", false);

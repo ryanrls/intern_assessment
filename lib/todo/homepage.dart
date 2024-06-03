@@ -3,6 +3,7 @@ import 'package:intern_assessment/backend/controller.dart';
 import 'package:intern_assessment/backend/todo_dao.dart';
 import 'package:intern_assessment/component.dart';
 import 'package:intern_assessment/todo/update_todo.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -20,6 +21,8 @@ class _HomepageState extends State<Homepage> {
   List<dynamic>? filteredSearch;
   bool isUpdating = false;
 
+  final supabase = Supabase.instance.client;
+
   String dropDownValue = "All";
   List<String> filterCategories = ['All', 'To-Do', 'Urgent', 'Done'];
 
@@ -34,6 +37,29 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('To-Do List'),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: "1",
+                child: Text("Edit Profile"),
+              ),
+              const PopupMenuItem(
+                value: "2",
+                child: Text("Logout"),
+              ),
+            ],
+            onSelected: (value) {
+              if (value == "1") {
+                Navigator.of(context).pushNamed("/edit_profile");
+              } else if (value == "2") {
+                supabase.auth.signOut();
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil("/", (route) => false);
+              }
+            },
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),

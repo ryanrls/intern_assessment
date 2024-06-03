@@ -86,3 +86,16 @@ class Filter {
     return filterList;
   }
 }
+
+class Validator {
+  bool isEmail(String s) {
+    final RegExp emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
+    if (emailRegex.hasMatch(s)) {
+      return true;
+    }
+
+    return false;
+  }
+}

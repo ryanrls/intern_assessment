@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intern_assessment/backend/authentication_dao.dart';
+import 'package:intern_assessment/backend/controller.dart';
 import 'package:intern_assessment/component.dart';
 
 class Register extends StatefulWidget {
@@ -31,14 +32,34 @@ class _RegisterState extends State<Register> {
                 Component().textfield(context, _nameController, false,
                     decoration: const InputDecoration(labelText: 'Name')),
                 Component().textfield(context, _emailController, false,
-                    decoration: const InputDecoration(labelText: 'Email')),
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    validator: (value) {
+                  if (value!.isEmpty || value == "") {
+                    return "Please Enter Email";
+                  } else if (!Validator().isEmail(value)) {
+                    return "Please Enter Valid Email";
+                  }
+                  return null;
+                }),
                 Component().textfield(context, _passwordController, false,
-                    decoration: const InputDecoration(labelText: 'Password')),
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    validator: (value) {
+                  if (value!.isEmpty || value == "") {
+                    return "Please Enter Password";
+                  } else if (value.length <= 6) {
+                    return "Password must be length 6";
+                  }
+                  return null;
+                }),
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: Component().loginButton(context, 'Submit', () async {
-                    Authentication().register(_nameController.text,
-                        _emailController.text, _passwordController.text);
+                  child: Component().submitButton(context, 'Submit', () async {
+                    if (_formKey.currentState!.validate()) {
+                      Authentication().register(
+                          _nameController.text.toUpperCase(),
+                          _emailController.text,
+                          _passwordController.text);
+                    }
                   }),
                 )
               ],

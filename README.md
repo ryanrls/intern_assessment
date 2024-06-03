@@ -1,16 +1,5 @@
 # intern_assessment
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Install flutter in your device - https://docs.flutter.dev/get-started/install
+- Run (flutter pub get) to resolve all dependencies
+- Install android studio for emulator - https://developer.android.com/studio?gad_source=1&gclid=Cj0KCQjw0_WyBhDMARIsAL1Vz8tkEC2kPc2Z1g6dMJPuygS9NKnv0-Rca6ISkYOvGrNL5a3iqy64JrIaAsSFEALw_wcB&gclsrc=aw.ds

@@ -90,4 +90,13 @@ class Component {
             borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.onInverseSurface)));
   }
+
+  PreferredSizeWidget? appBar(BuildContext context,
+      {List<Widget>? dropdownStuff, Text? title}) {
+    return AppBar(
+      title: title,
+      backgroundColor: Theme.of(context).splashColor,
+      actions: dropdownStuff,
+    );
+  }
 }

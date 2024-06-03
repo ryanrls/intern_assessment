@@ -20,9 +20,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Login"),
-      ),
+      appBar: Component().appBar(context, title: const Text('Login Page')),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Form(

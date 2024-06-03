@@ -6,7 +6,6 @@ import 'package:intern_assessment/authentication/reset_password.dart';
 import 'package:intern_assessment/todo/Todo.dart';
 import 'package:intern_assessment/todo/edit_profile.dart';
 import 'package:intern_assessment/todo/homepage.dart';
-import 'package:intern_assessment/todo/update_todo.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {

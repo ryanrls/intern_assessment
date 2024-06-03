@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intern_assessment/backend/todo_dao.dart';
+import 'package:intern_assessment/component.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 var todoData;
@@ -9,20 +10,25 @@ var todoData;
 class Authentication {
   final supabase = Supabase.instance.client;
 
-  Future<void> register(String name, String email, String password) async {
-    final res = await supabase.auth.signUp(
-        email: email,
-        password: password,
-        emailRedirectTo: 'io.supabase.flutterquickstart://login-callback/');
+  Future<void> register(
+      String name, String email, String password, BuildContext context) async {
+    try {
+      final res = await supabase.auth.signUp(
+          email: email,
+          password: password,
+          emailRedirectTo: 'io.supabase.flutterquickstart://login-callback/');
 
-    await supabase.from('user').insert({
-      'id': res.user!.id,
-      'email': email,
-      'name': name,
-      'password': password
-    });
-
-    print(res.user!.id);
+      await supabase.from('user').insert({
+        'id': res.user!.id,
+        'email': email,
+        'name': name,
+      });
+      if (context.mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      }
+    } on AuthException {
+      Component().snackBar(context, "Account already exist", true);
+    }
   }
 
   Future<void> login(

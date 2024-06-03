@@ -48,9 +48,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add To-do'),
-      ),
+      appBar: Component().appBar(context, title: const Text('Update To-Do')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Form(
@@ -87,7 +85,14 @@ class _UpdateTodoState extends State<UpdateTodo> {
               const SizedBox(
                 height: 10,
               ),
-              TextField(
+              TextFormField(
+                validator: (value) {
+                  if (_dateController.text.isEmpty &&
+                      _timeController.text.isNotEmpty) {
+                    return "Please Select Date";
+                  }
+                  return null;
+                },
                 controller: _dateController,
                 decoration: Component().dateTimeTextFieldStyle(context, "Date",
                     prefixIcon: const Icon(Icons.calendar_today)),
@@ -101,7 +106,15 @@ class _UpdateTodoState extends State<UpdateTodo> {
                   }
                 },
               ),
-              TextField(
+              TextFormField(
+                validator: (value) {
+                  if (_timeController.text == "" ||
+                      _timeController.text.isEmpty &&
+                          _dateController.text.isNotEmpty) {
+                    return "Please Select Time";
+                  }
+                  return null;
+                },
                 controller: _timeController,
                 decoration: Component().dateTimeTextFieldStyle(context, "Time",
                     prefixIcon: const Icon(Icons.timer)),
@@ -125,27 +138,22 @@ class _UpdateTodoState extends State<UpdateTodo> {
                       ? null
                       : () async {
                           try {
-                            setState(() {
-                              isLoading = true;
-                            });
+                            if (_formKey.currentState!.validate()) {
+                              await TodoDAO().updateTodo(
+                                  _titleController.text,
+                                  dropdownValue!,
+                                  _dateController.text,
+                                  _timeController.text,
+                                  id!);
 
-                            await TodoDAO().updateTodo(
-                                _titleController.text,
-                                dropdownValue!,
-                                _dateController.text,
-                                _timeController.text,
-                                id!);
+                              if (context.mounted) {
+                                Component().snackBar(context,
+                                    "To-Do Updated Successfully", false);
+                              }
 
-                            if (context.mounted) {
-                              Component().snackBar(
-                                  context, "To-Do Updated Successfully", false);
-                            }
-
-                            setState(() {
-                              isLoading = false;
                               Navigator.pushNamedAndRemoveUntil(
                                   context, '/homepage', (route) => false);
-                            });
+                            }
                           } catch (e) {
                             if (context.mounted) {
                               Component().snackBar(context, e.toString(), true);

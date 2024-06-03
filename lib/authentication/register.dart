@@ -17,11 +17,14 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-      ),
+      appBar: Component().appBar(context, title: const Text('Register')),
       body: Form(
         key: _formKey,
         child: Center(
@@ -30,7 +33,13 @@ class _RegisterState extends State<Register> {
             child: Column(
               children: [
                 Component().textfield(context, _nameController, false,
-                    decoration: const InputDecoration(labelText: 'Name')),
+                    decoration: const InputDecoration(labelText: 'Name'),
+                    validator: (value) {
+                  if (value!.isEmpty || value == "") {
+                    return "Please Enter Name";
+                  }
+                  return null;
+                }),
                 Component().textfield(context, _emailController, false,
                     decoration: const InputDecoration(labelText: 'Email'),
                     validator: (value) {
@@ -41,13 +50,13 @@ class _RegisterState extends State<Register> {
                   }
                   return null;
                 }),
-                Component().textfield(context, _passwordController, false,
+                Component().textfield(context, _passwordController, true,
                     decoration: const InputDecoration(labelText: 'Password'),
                     validator: (value) {
                   if (value!.isEmpty || value == "") {
                     return "Please Enter Password";
-                  } else if (value.length <= 6) {
-                    return "Password must be length 6";
+                  } else if (value.length < 6) {
+                    return "Password must be length 6 or more";
                   }
                   return null;
                 }),
@@ -58,7 +67,8 @@ class _RegisterState extends State<Register> {
                       Authentication().register(
                           _nameController.text.toUpperCase(),
                           _emailController.text,
-                          _passwordController.text);
+                          _passwordController.text,
+                          context);
                     }
                   }),
                 )

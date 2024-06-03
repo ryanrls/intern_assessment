@@ -18,32 +18,52 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Reset Password"),
-      ),
-      body: Column(
-        children: [
-          Component().textfield(context, _pwController, true,
-              decoration: const InputDecoration(labelText: "New Password")),
-          Component().textfield(context, _confirmController, true,
-              decoration: const InputDecoration(labelText: "Confirm Password")),
-          Component().submitButton(context, "Change Password", () async {
-            if (_pwController.text == _confirmController.text) {
-              await supabase.auth.updateUser(
-                UserAttributes(
-                  password: _confirmController.text,
-                ),
-              );
-              supabase.auth.signOut();
-              if (context.mounted) {
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil('/', (route) => false);
+      appBar: Component().appBar(context, title: const Text('Reset Password')),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Component().textfield(context, _pwController, true,
+                decoration: const InputDecoration(labelText: "New Password"),
+                validator: (value) {
+              if (_pwController.text.isEmpty || _pwController.text == "") {
+                return "Please Fill in New Password";
+              } else if (_pwController.text != _confirmController.text) {
+                return "Password does not match";
               }
-            } else {
-              return;
-            }
-          })
-        ],
+              return null;
+            }),
+            Component().textfield(context, _confirmController, true,
+                decoration:
+                    const InputDecoration(labelText: "Confirm Password"),
+                validator: (value) {
+              if (_pwController.text.isEmpty || _pwController.text == "") {
+                return "Please Fill in Confirm Password";
+              } else if (_pwController.text != _confirmController.text) {
+                return "Password does not match";
+              }
+              return null;
+            }),
+            Component().submitButton(context, "Change Password", () async {
+              if (_formKey.currentState!.validate()) {
+                if (_pwController.text == _confirmController.text) {
+                  await supabase.auth.updateUser(
+                    UserAttributes(
+                      password: _confirmController.text,
+                    ),
+                  );
+                  supabase.auth.signOut();
+                  if (context.mounted) {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/', (route) => false);
+                  }
+                }
+              } else {
+                return;
+              }
+            })
+          ],
+        ),
       ),
     );
   }

@@ -15,13 +15,18 @@ class Component {
   }
 
   Widget loginButton(
-      BuildContext context, String text, Future<void> Function()? onPressed) {
+      BuildContext context, String text, Future<void> Function()? onPressed,
+      {Color? backgroundColor, Color? textColor}) {
     return ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
+            backgroundColor: backgroundColor,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)))),
-        child: Text(text));
+        child: Text(
+          text,
+          style: TextStyle(color: textColor),
+        ));
   }
 
   Widget subheader(String text) {
@@ -60,7 +65,7 @@ class Component {
     return null;
   }
 
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> scaffold(
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(
       BuildContext context, String message, bool error) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

@@ -3,6 +3,7 @@ import 'package:intern_assessment/authentication/login.dart';
 import 'package:intern_assessment/authentication/register.dart';
 import 'package:intern_assessment/todo/Todo.dart';
 import 'package:intern_assessment/todo/homepage.dart';
+import 'package:intern_assessment/todo/update_todo.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {

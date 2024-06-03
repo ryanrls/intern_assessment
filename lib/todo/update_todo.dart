@@ -2,22 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:intern_assessment/backend/todo_dao.dart';
 import 'package:intern_assessment/component.dart';
 
-class Todo extends StatefulWidget {
-  const Todo({super.key});
+class UpdateTodo extends StatefulWidget {
+  final String title;
+  final String? date;
+  final String? time;
+  final String status;
+  final int id;
+
+  const UpdateTodo({
+    required this.title,
+    required this.date,
+    required this.time,
+    required this.status,
+    required this.id,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<Todo> createState() => _TodoState();
+  State<UpdateTodo> createState() => _UpdateTodoState();
 }
 
-class _TodoState extends State<Todo> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
+class _UpdateTodoState extends State<UpdateTodo> {
+  late TextEditingController _titleController = TextEditingController();
+  late TextEditingController _dateController = TextEditingController();
+  late TextEditingController _timeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
-  String dropdownValue = Component().taskStatus.first;
+  String? dropdownValue;
+  int? id;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.title);
+    _dateController = TextEditingController(text: widget.date);
+    _timeController = TextEditingController(text: widget.time);
+    dropdownValue = widget.status;
+    id = widget.id;
+
+    print(_dateController.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +120,7 @@ class _TodoState extends State<Todo> {
               ),
               Component().loginButton(
                   context,
-                  "Add To-Do",
+                  "Update To-Do",
                   isLoading
                       ? null
                       : () async {
@@ -103,11 +129,12 @@ class _TodoState extends State<Todo> {
                               isLoading = true;
                             });
 
-                            await TodoDAO().addTodo(
+                            await TodoDAO().updateTodo(
                                 _titleController.text,
-                                dropdownValue,
+                                dropdownValue!,
                                 _dateController.text,
-                                _timeController.text);
+                                _timeController.text,
+                                id!);
 
                             // if (success == true && context.mounted) {
                             //   _dateController.clear();
@@ -117,7 +144,7 @@ class _TodoState extends State<Todo> {
                             // }
                             if (context.mounted) {
                               Component().snackBar(
-                                  context, "To-Do Successfully Added", false);
+                                  context, "To-Do Updated Successfully", false);
                             }
 
                             setState(() {
@@ -131,6 +158,38 @@ class _TodoState extends State<Todo> {
                             }
                           }
                         }),
+              Component().loginButton(
+                  context,
+                  "Delete To-Do",
+                  isLoading
+                      ? null
+                      : () async {
+                          try {
+                            setState(() {
+                              isLoading = true;
+                            });
+
+                            await TodoDAO().deleteTodo(id!);
+
+                            if (context.mounted) {
+                              Component().snackBar(
+                                  context, "To-Do Deleted Successfully", false);
+                            }
+
+                            setState(() {
+                              isLoading = false;
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/homepage', (route) => false);
+                            });
+                          } catch (e) {
+                            if (context.mounted) {
+                              Component().snackBar(context, e.toString(), true);
+                            }
+                          }
+                        },
+                  backgroundColor:
+                      Theme.of(context).colorScheme.onErrorContainer,
+                  textColor: Colors.white),
             ],
           ),
         ),

@@ -37,10 +37,28 @@ class TodoDAO {
     return data;
   }
 
-  Future<void> updateTodo(String status, int id) async {
+  Future<void> updateTodoStatus(String status, int id) async {
     await supabase
         .from('todo_item')
         .update({'status': status})
+        .eq('user', supabase.auth.currentUser!.id)
+        .eq('id', id);
+  }
+
+  Future<void> updateTodo(
+      String title, String status, String date, String time, int id) async {
+    await supabase
+        .from('todo_item')
+        .update(
+            {'title': title, 'status': status, 'due': date, 'due_time': time})
+        .eq('user', supabase.auth.currentUser!.id)
+        .eq('id', id);
+  }
+
+  Future<void> deleteTodo(int id) async {
+    await supabase
+        .from('todo_item')
+        .delete()
         .eq('user', supabase.auth.currentUser!.id)
         .eq('id', id);
   }
